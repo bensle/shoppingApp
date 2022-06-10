@@ -108,4 +108,6 @@ const ListItem = styled.li`
   padding: 10px 15px;
   border-radius: 12px;
   background-color: white;
+  flex-grow: 1;
+  text-align: center;
 `;
