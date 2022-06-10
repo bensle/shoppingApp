@@ -7,8 +7,10 @@ const GlobalStyle = createGlobalStyle`
     padding: 0;
   }
   body{
+    background-color:gold;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    font-family: 'Indie Flower', cursive;
   }
   code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
