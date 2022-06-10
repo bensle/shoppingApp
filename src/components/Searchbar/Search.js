@@ -22,18 +22,20 @@ export default function SearchBar(shoppingItems) {
         name="search"
         id="foodSearch"
         placeholder="search..."
+        autoComplete="off"
         onChange={onSubmit}
       />
       <StyledList>
-        {shoppingArray
-          .filter((product) =>
-            product.name.en
-              .toLowerCase()
-              .includes(searchInput.toLocaleLowerCase())
-          )
-          .map((product) => (
-            <ListItem key={product._id}>{product.name.en}</ListItem>
-          ))}
+        {searchInput !== '' &&
+          shoppingArray
+            .filter((product) =>
+              product.name.en
+                .toLowerCase()
+                .includes(searchInput.toLocaleLowerCase())
+            )
+            .map((product) => (
+              <ListItem key={product._id}>{product.name.en}</ListItem>
+            ))}
       </StyledList>
 
       {/* <StyledList>
