@@ -4,12 +4,21 @@ import { useState } from 'react';
 export default function SearchBar(shoppingItems) {
   const shoppingArray = shoppingItems.shoppingItems;
 
-  const [searchInput, setSearchInput] = useState('');
+  const [searchInput, setSearchInput] = useState(''); //input field
+  const [shoppingList, setShoppingList] = useState([]);
+  const [results, setResults] = useState([]);
 
   function onSubmit(event) {
     event.preventDefault();
     setSearchInput(event.target.value);
+
+    const result = shoppingArray.filter((product) =>
+      product.name.en.toLowerCase().includes(searchInput.toLocaleLowerCase())
+    );
+    setResults(result);
   }
+
+  console.log('result', results);
 
   return (
     <SearchForm>
@@ -27,23 +36,10 @@ export default function SearchBar(shoppingItems) {
       />
       <StyledList>
         {searchInput !== '' &&
-          shoppingArray
-            .filter((product) =>
-              product.name.en
-                .toLowerCase()
-                .includes(searchInput.toLocaleLowerCase())
-            )
-            .map((product) => (
-              <ListItem key={product._id}>{product.name.en}</ListItem>
-            ))}
+          results.map((product) => (
+            <ListItem key={product._id}>{product.name.en}</ListItem>
+          ))}
       </StyledList>
-
-      {/* <StyledList>
-        {shoppingArray.map(({ name, _id }) => (
-          <ListItem key={_id}>{name.en}</ListItem>
-        ))}
-      </StyledList> */}
-      {/* <button type="submit">Search</button> */}
     </SearchForm>
   );
 }
@@ -89,15 +85,8 @@ const ListItem = styled.li`
   background-color: white;
   flex-grow: 1;
   text-align: center;
+  &:hover {
+    background-color: black;
+    color: white;
+  }
 `;
-
-// const SearchButton = styled.button`
-//   font-family: inherit;
-//   width: 9rem;
-//   padding: 0.3rem;
-//   font-weight: bold;
-//   border: solid 2px white;
-//   border-radius: 10px;
-//   background-color: grey;
-//   width: 100%;
-// `;
