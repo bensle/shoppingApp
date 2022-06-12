@@ -4,21 +4,31 @@ import { useState } from 'react';
 export default function SearchBar(shoppingItems) {
   const shoppingArray = shoppingItems.shoppingItems;
 
-  const [searchInput, setSearchInput] = useState(''); //input field
-  const [shoppingList, setShoppingList] = useState([]);
+  const [searchInput, setSearchInput] = useState('');
+  const [shoppingCart, setShoppingCart] = useState([]);
   const [results, setResults] = useState([]);
 
-  function onSubmit(event) {
-    event.preventDefault();
-    setSearchInput(event.target.value);
-
-    const result = shoppingArray.filter((product) =>
-      product.name.en.toLowerCase().includes(searchInput.toLocaleLowerCase())
-    );
-    setResults(result);
+  function filteredProduct(input) {
+    let reg = new RegExp(input, 'i');
+    input
+      ? setResults(shoppingArray.filter((item) => item.name.en.match(reg)))
+      : setResults([]);
+    setSearchInput(input);
   }
 
-  console.log('result', results);
+  function addNewProductToCart(id) {
+    const newCartProduct = results.find((product) => product._id === id);
+    if (!shoppingCart.includes(newCartProduct))
+      setShoppingCart([...shoppingCart, newCartProduct]);
+    setSearchInput('');
+  }
+
+  function removeProductFromCart(id) {
+    setShoppingCart(shoppingCart.filter((product) => product._id !== id));
+  }
+
+  console.log('results', results);
+  console.log('Shop', shoppingCart);
 
   return (
     <SearchForm>
@@ -27,19 +37,36 @@ export default function SearchBar(shoppingItems) {
         <HiddenSpan>Search food</HiddenSpan>
       </label>
       <SearchInput
+        value={searchInput}
         type="text"
         name="search"
         id="foodSearch"
         placeholder="search..."
         autoComplete="off"
-        onChange={onSubmit}
+        onChange={(event) => filteredProduct(event.target.value)}
       />
+
       <StyledList>
-        {searchInput !== '' &&
-          results.map((product) => (
-            <ListItem key={product._id}>{product.name.en}</ListItem>
-          ))}
+        {results.map((product) => (
+          <ListItem
+            onClick={() => addNewProductToCart(product._id)}
+            key={product._id}
+          >
+            {product.name.en}
+          </ListItem>
+        ))}
       </StyledList>
+
+      <ul>
+        {shoppingCart.map((product) => (
+          <li
+            onClick={() => removeProductFromCart(product._id)}
+            key={product._id}
+          >
+            {product.name.en}
+          </li>
+        ))}
+      </ul>
     </SearchForm>
   );
 }
