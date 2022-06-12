@@ -3,8 +3,10 @@ import styled from 'styled-components';
 import Heading from './components/Heading/Heading';
 import SearchBar from './components/Searchbar/Search';
 import { getFromLocal, setToLocal } from './lib/localStorage';
+import Language from './components/Language/Language';
 
 export default function App() {
+  const [language, setLanguage] = useState('en');
   const [shoppingItems, setShoppingItems] = useState([]);
   const [shoppingCart, setShoppingCart] = useState(
     getFromLocal('shoppingCart')
@@ -27,10 +29,16 @@ export default function App() {
 
   useEffect(() => setToLocal('shoppingCart', shoppingCart), [shoppingCart]);
 
+  function changeLanguage(language) {
+    setLanguage(language);
+  }
+
   return (
     <AppContainer>
+      <Language onClick={changeLanguage} />
       <Heading />
       <SearchBar
+        language={language}
         shoppingCart={shoppingCart}
         setShoppingCart={setShoppingCart}
         shoppingItems={shoppingItems}

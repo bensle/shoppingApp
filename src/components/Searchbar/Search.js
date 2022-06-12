@@ -6,6 +6,7 @@ export default function SearchBar({
   shoppingItems,
   shoppingCart,
   setShoppingCart,
+  language,
 }) {
   // const shoppingArray = shoppingItems.shoppingItems;
   const [searchInput, setSearchInput] = useState('');
@@ -17,14 +18,27 @@ export default function SearchBar({
   const handleClick = () => {
     refInput.current.focus();
   };
-  //----- if input -> setResult with filterd base array-----//
-  function filteredProduct(input) {
-    let inputReg = new RegExp(input, 'i');
+  //-----Language is EN - if input  -> setResult with filterd base array-----//
+  function filteredProductEN(input) {
+    let inputRegEN = new RegExp(input, 'i');
     input
-      ? setResults(shoppingItems.filter((item) => item.name.en.match(inputReg)))
+      ? setResults(
+          shoppingItems.filter((item) => item.name.en.match(inputRegEN))
+        )
       : setResults([]);
     setSearchInput(input);
   }
+  //----- Language is DE - if input  -> setResult with filterd base array-----//
+  function filteredProductDE(input) {
+    let inputRegDE = new RegExp(input, 'i');
+    input
+      ? setResults(
+          shoppingItems.filter((item) => item.name.de.match(inputRegDE))
+        )
+      : setResults([]);
+    setSearchInput(input);
+  }
+
   //----- add new Product to cart -> function is on listitem-----//
   function addNewProductToCart(id) {
     const newCartProduct = results.find((product) => product._id === id);
@@ -40,11 +54,27 @@ export default function SearchBar({
   }
 
   return (
-    <SearchForm>
-      <StyledSearchHeading>What do you want to buy?</StyledSearchHeading>
+    <SearchForm aria-labelledby="searchHeading">
+      {language === 'en' ? (
+        <StyledSearchHeading id="searchHeading">
+          {' '}
+          What do you want to buy?
+        </StyledSearchHeading>
+      ) : (
+        <StyledSearchHeading id="searchHeading">
+          {' '}
+          Was möchtest du kaufen?
+        </StyledSearchHeading>
+      )}
+
       <label htmlFor="foodSearch">
-        <HiddenSpan>Search food</HiddenSpan>
+        {language === 'en' ? (
+          <HiddenSpan>Search food</HiddenSpan>
+        ) : (
+          <HiddenSpan>Suche Lebensmittel</HiddenSpan>
+        )}
       </label>
+
       <SearchInput
         ref={refInput}
         value={searchInput}
@@ -53,23 +83,38 @@ export default function SearchBar({
         id="foodSearch"
         placeholder="search..."
         autoComplete="off"
-        onChange={(event) => filteredProduct(event.target.value)}
+        onChange={
+          language === 'en'
+            ? (event) => filteredProductEN(event.target.value)
+            : (event) => filteredProductDE(event.target.value)
+        }
       />
+      {language === 'en' ? (
+        <StyledSearchHeading>Your Results</StyledSearchHeading>
+      ) : (
+        <StyledSearchHeading>Deine Ergebnisse</StyledSearchHeading>
+      )}
 
-      <StyledSearchHeading>Your Results</StyledSearchHeading>
       <StyledList>
         {searchInput && results == 0 ? (
-          <SytledParagraph>
-            We could not find what you were looking for. For that we are truly
-            sorry!
-          </SytledParagraph>
+          language === 'en' ? (
+            <SytledParagraph>
+              We could not find what you were looking for. For that we are truly
+              sorry!
+            </SytledParagraph>
+          ) : (
+            <SytledParagraph>
+              Wir konnten das, was Du suchst leider nicht finden! Es tut uns
+              wirklich leid!
+            </SytledParagraph>
+          )
         ) : (
           results.map((product) => (
             <ListItem
               onClick={() => addNewProductToCart(product._id)}
               key={product._id}
             >
-              {product.name.en}
+              {language === 'en' ? product.name.en : product.name.de}
             </ListItem>
           ))
         )}
@@ -86,14 +131,19 @@ export default function SearchBar({
         ))}
       </StyledList> */}
       <>
-        <CartHeading>Shopping Cart</CartHeading>
+        {language === 'en' ? (
+          <CartHeading>Shopping Cart</CartHeading>
+        ) : (
+          <CartHeading>Warenkorb</CartHeading>
+        )}
+
         <CartList>
           {shoppingCart.map((product) => (
             <CartItem
               onClick={() => removeProductFromCart(product._id)}
               key={product._id}
             >
-              {product.name.en}
+              {language === 'en' ? product.name.en : product.name.de}
             </CartItem>
           ))}
         </CartList>
