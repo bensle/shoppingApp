@@ -23,7 +23,7 @@ export default function SearchBar({
     let inputRegEN = new RegExp(input, 'i');
     input
       ? setResults(
-          shoppingItems.filter((item) => item.name.en.match(inputRegEN))
+          shoppingItems.filter((product) => product.name.en.match(inputRegEN))
         )
       : setResults([]);
     setSearchInput(input);
@@ -33,7 +33,7 @@ export default function SearchBar({
     let inputRegDE = new RegExp(input, 'i');
     input
       ? setResults(
-          shoppingItems.filter((item) => item.name.de.match(inputRegDE))
+          shoppingItems.filter((product) => product.name.de.match(inputRegDE))
         )
       : setResults([]);
     setSearchInput(input);
@@ -53,16 +53,18 @@ export default function SearchBar({
     handleClick();
   }
 
+  function deleteCart(event) {
+    setShoppingCart([]);
+  }
+
   return (
     <SearchForm aria-labelledby="searchHeading">
       {language === 'en' ? (
         <StyledSearchHeading id="searchHeading">
-          {' '}
           What do you want to buy?
         </StyledSearchHeading>
       ) : (
         <StyledSearchHeading id="searchHeading">
-          {' '}
           Was möchtest du kaufen?
         </StyledSearchHeading>
       )}
@@ -147,6 +149,17 @@ export default function SearchBar({
             </CartItem>
           ))}
         </CartList>
+        <Styleddiv>
+          {language === 'en' ? (
+            <Button type="button" onClick={deleteCart}>
+              Delete Cart
+            </Button>
+          ) : (
+            <Button type="button" onClick={deleteCart}>
+              Warenkorb löschen
+            </Button>
+          )}
+        </Styleddiv>
       </>
     </SearchForm>
   );
@@ -241,4 +254,23 @@ const CartHeading = styled.h2`
   text-align: center;
   font-size: 1.2rem;
   margin-top: 20px;
+`;
+
+const Styleddiv = styled.div`
+  display: flex;
+  gap: 5px;
+  justify-content: center;
+`;
+const Button = styled.button`
+  padding: 4px 8px;
+  border: none;
+  background-color: white;
+  border-radius: 10px;
+  font-family: inherit;
+  width: 50%;
+  margin-top: 20px;
+  &:hover {
+    background-color: crimson;
+    color: white;
+  }
 `;
