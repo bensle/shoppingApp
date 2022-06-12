@@ -27,6 +27,7 @@ export default function SearchBar(shoppingItems) {
     if (!shoppingCart.includes(newCartProduct))
       setShoppingCart([...shoppingCart, newCartProduct]);
     setSearchInput('');
+    setResults([]);
     handleClick();
   }
   //----- removes a product from cart -> function is on cartlistitem-----//
@@ -52,7 +53,26 @@ export default function SearchBar(shoppingItems) {
         onChange={(event) => filteredProduct(event.target.value)}
       />
 
+      <StyledSearchHeading>Your Results</StyledSearchHeading>
       <StyledList>
+        {searchInput && results == 0 ? (
+          <SytledParagraph>
+            We could not find what you were looking for. For that we are truly
+            sorry!
+          </SytledParagraph>
+        ) : (
+          results.map((product) => (
+            <ListItem
+              onClick={() => addNewProductToCart(product._id)}
+              key={product._id}
+            >
+              {product.name.en}
+            </ListItem>
+          ))
+        )}
+      </StyledList>
+
+      {/* <StyledList>
         {results.map((product, search) => (
           <ListItem
             onClick={() => addNewProductToCart(product._id)}
@@ -61,7 +81,7 @@ export default function SearchBar(shoppingItems) {
             {product.name.en}
           </ListItem>
         ))}
-      </StyledList>
+      </StyledList> */}
       <>
         <CartHeading>Shopping Cart</CartHeading>
         <CartList>
@@ -82,7 +102,8 @@ export default function SearchBar(shoppingItems) {
 //------------Styled Comp------------
 const StyledSearchHeading = styled.h2`
   text-align: center;
-  font-size: 1rem;
+  font-size: 1.2rem;
+  margin-top: 20px;
 `;
 
 const SearchForm = styled.form`
@@ -104,14 +125,27 @@ const SearchInput = styled.input`
   margin-bottom: 5px;
 `;
 
+const SytledParagraph = styled.p`
+  text-align: center;
+  font-size: 1.2rem;
+  border: solid 2px;
+  color: red;
+  border-radius: 10px;
+  font-weight: bold;
+  padding: 5px;
+  background-color: white;
+`;
+
 const StyledList = styled.ul`
   list-style: none;
   display: flex;
   flex-wrap: wrap;
+  justify-content: center;
   gap: 8px;
   margin-left: 10px;
   margin-right: 10px;
   background-color: gold;
+  margin-top: 10px;
 `;
 
 const ListItem = styled.li`
@@ -134,6 +168,7 @@ const CartList = styled.ul`
   margin-left: 10px;
   margin-right: 10px;
   background-color: gold;
+  margin-top: 10px;
 `;
 
 const CartItem = styled.li`
