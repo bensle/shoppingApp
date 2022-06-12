@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import Heading from './components/Heading/Heading';
 import SearchBar from './components/Searchbar/Search';
+import ShoppingCart from './components/ShoppingCart/ShoppingCart';
 
 export default function App() {
   const [shoppingItems, setShoppingItems] = useState([]);
@@ -25,12 +26,7 @@ export default function App() {
     <AppContainer>
       <Heading />
       <SearchBar shoppingItems={shoppingItems} />
-
-      {/* <StyledList>
-        {shoppingItems.map(({ name, _id }) => (
-          <ListItem key={_id}>{name.en}</ListItem>
-        ))}
-      </StyledList> */}
+      <ShoppingCart shoppingItems={shoppingItems} />
     </AppContainer>
   );
 }

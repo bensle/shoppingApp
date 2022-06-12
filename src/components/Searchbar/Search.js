@@ -1,34 +1,39 @@
 import styled from 'styled-components';
 import { useState } from 'react';
+import { useRef } from 'react';
 
 export default function SearchBar(shoppingItems) {
   const shoppingArray = shoppingItems.shoppingItems;
-
   const [searchInput, setSearchInput] = useState('');
   const [shoppingCart, setShoppingCart] = useState([]);
   const [results, setResults] = useState([]);
+  const refInput = useRef();
 
+  //----- sets the focus back to input after click-----//
+  const handleClick = () => {
+    refInput.current.focus();
+  };
+  //----- if input -> setResult with filterd base array.-----//
   function filteredProduct(input) {
-    let reg = new RegExp(input, 'i');
+    let inputReg = new RegExp(input, 'i');
     input
-      ? setResults(shoppingArray.filter((item) => item.name.en.match(reg)))
+      ? setResults(shoppingArray.filter((item) => item.name.en.match(inputReg)))
       : setResults([]);
     setSearchInput(input);
   }
-
+  //----- add new Product to cart -> function is on listitem-----//
   function addNewProductToCart(id) {
     const newCartProduct = results.find((product) => product._id === id);
     if (!shoppingCart.includes(newCartProduct))
       setShoppingCart([...shoppingCart, newCartProduct]);
     setSearchInput('');
+    handleClick();
   }
-
+  //----- removes a product from cart -> function is on cartlistitem-----//
   function removeProductFromCart(id) {
     setShoppingCart(shoppingCart.filter((product) => product._id !== id));
+    handleClick();
   }
-
-  console.log('results', results);
-  console.log('Shop', shoppingCart);
 
   return (
     <SearchForm>
@@ -37,6 +42,7 @@ export default function SearchBar(shoppingItems) {
         <HiddenSpan>Search food</HiddenSpan>
       </label>
       <SearchInput
+        ref={refInput}
         value={searchInput}
         type="text"
         name="search"
@@ -47,7 +53,7 @@ export default function SearchBar(shoppingItems) {
       />
 
       <StyledList>
-        {results.map((product) => (
+        {results.map((product, search) => (
           <ListItem
             onClick={() => addNewProductToCart(product._id)}
             key={product._id}
@@ -56,17 +62,19 @@ export default function SearchBar(shoppingItems) {
           </ListItem>
         ))}
       </StyledList>
-
-      <ul>
-        {shoppingCart.map((product) => (
-          <li
-            onClick={() => removeProductFromCart(product._id)}
-            key={product._id}
-          >
-            {product.name.en}
-          </li>
-        ))}
-      </ul>
+      <>
+        <CartHeading>Shopping Cart</CartHeading>
+        <CartList>
+          {shoppingCart.map((product) => (
+            <CartItem
+              onClick={() => removeProductFromCart(product._id)}
+              key={product._id}
+            >
+              {product.name.en}
+            </CartItem>
+          ))}
+        </CartList>
+      </>
     </SearchForm>
   );
 }
@@ -113,7 +121,35 @@ const ListItem = styled.li`
   flex-grow: 1;
   text-align: center;
   &:hover {
-    background-color: black;
+    background-color: olivedrab;
     color: white;
   }
+`;
+
+const CartList = styled.ul`
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-left: 10px;
+  margin-right: 10px;
+  background-color: gold;
+`;
+
+const CartItem = styled.li`
+  padding: 10px 15px;
+  border-radius: 12px;
+  background-color: white;
+  flex-grow: 1;
+  text-align: center;
+  &:hover {
+    background-color: olivedrab;
+    color: white;
+  }
+`;
+
+const CartHeading = styled.h2`
+  text-align: center;
+  font-size: 1.2rem;
+  margin-top: 20px;
 `;
