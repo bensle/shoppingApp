@@ -2,10 +2,14 @@ import styled from 'styled-components';
 import { useState } from 'react';
 import { useRef } from 'react';
 
-export default function SearchBar(shoppingItems) {
-  const shoppingArray = shoppingItems.shoppingItems;
+export default function SearchBar({
+  shoppingItems,
+  shoppingCart,
+  setShoppingCart,
+}) {
+  // const shoppingArray = shoppingItems.shoppingItems;
   const [searchInput, setSearchInput] = useState('');
-  const [shoppingCart, setShoppingCart] = useState([]);
+
   const [results, setResults] = useState([]);
   const refInput = useRef();
 
@@ -17,7 +21,7 @@ export default function SearchBar(shoppingItems) {
   function filteredProduct(input) {
     let inputReg = new RegExp(input, 'i');
     input
-      ? setResults(shoppingArray.filter((item) => item.name.en.match(inputReg)))
+      ? setResults(shoppingItems.filter((item) => item.name.en.match(inputReg)))
       : setResults([]);
     setSearchInput(input);
   }

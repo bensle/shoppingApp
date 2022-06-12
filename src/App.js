@@ -2,9 +2,13 @@ import { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import Heading from './components/Heading/Heading';
 import SearchBar from './components/Searchbar/Search';
+import { getFromLocal, setToLocal } from './lib/localStorage';
 
 export default function App() {
   const [shoppingItems, setShoppingItems] = useState([]);
+  const [shoppingCart, setShoppingCart] = useState(
+    getFromLocal('shoppingCart')
+  );
 
   useEffect(() => {
     loadShoppingItems();
@@ -21,10 +25,16 @@ export default function App() {
     }
   }, []);
 
+  useEffect(() => setToLocal('shoppingCart', shoppingCart), [shoppingCart]);
+
   return (
     <AppContainer>
       <Heading />
-      <SearchBar shoppingItems={shoppingItems} />
+      <SearchBar
+        shoppingCart={shoppingCart}
+        setShoppingCart={setShoppingCart}
+        shoppingItems={shoppingItems}
+      />
     </AppContainer>
   );
 }
