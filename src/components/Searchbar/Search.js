@@ -13,7 +13,7 @@ export default function SearchBar(shoppingItems) {
   const handleClick = () => {
     refInput.current.focus();
   };
-  //----- if input -> setResult with filterd base array.-----//
+  //----- if input -> setResult with filterd base array-----//
   function filteredProduct(input) {
     let inputReg = new RegExp(input, 'i');
     input
@@ -27,7 +27,6 @@ export default function SearchBar(shoppingItems) {
     if (!shoppingCart.includes(newCartProduct))
       setShoppingCart([...shoppingCart, newCartProduct]);
     setSearchInput('');
-    setResults([]);
     handleClick();
   }
   //----- removes a product from cart -> function is on cartlistitem-----//
@@ -174,12 +173,13 @@ const CartList = styled.ul`
 const CartItem = styled.li`
   padding: 10px 15px;
   border-radius: 12px;
-  background-color: white;
+  background-color: olivedrab;
+  color: white;
   flex-grow: 1;
   text-align: center;
   &:hover {
-    background-color: olivedrab;
-    color: white;
+    background-color: white;
+    color: black;
   }
 `;
 
