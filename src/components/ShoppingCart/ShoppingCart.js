@@ -14,7 +14,6 @@ export default function ShoppingCart({
   function deleteCart(event) {
     setShoppingCart([]);
   }
-
   return (
     <>
       {language === 'en' ? (
