@@ -2,15 +2,13 @@ import { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import Heading from './components/Heading/Heading';
 import SearchBar from './components/Searchbar/Search';
-import { getFromLocal, setToLocal } from './lib/localStorage';
 import Language from './components/Language/Language';
+import useLocalStorage from './Hooks/useLocalStorage';
 
 export default function App() {
-  const [language, setLanguage] = useState(getFromLocal('language') ?? []);
+  const [language, setLanguage] = useLocalStorage('Language', 'en');
   const [shoppingItems, setShoppingItems] = useState([]);
-  const [shoppingCart, setShoppingCart] = useState(
-    getFromLocal('shoppingCart') ?? []
-  );
+  const [shoppingCart, setShoppingCart] = useLocalStorage('ShoppingCart', []);
 
   useEffect(() => {
     loadShoppingItems();
@@ -26,9 +24,6 @@ export default function App() {
       }
     }
   }, []);
-
-  useEffect(() => setToLocal('shoppingCart', shoppingCart), [shoppingCart]);
-  useEffect(() => setToLocal('language', language), [language]);
 
   function changeLanguage(language) {
     setLanguage(language);
