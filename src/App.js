@@ -3,11 +3,13 @@ import styled from 'styled-components';
 import Heading from './components/Heading/Heading';
 import SearchBar from './components/Searchbar/Search';
 import { getFromLocal, setToLocal } from './lib/localStorage';
+import Language from './components/Language/Language';
 
 export default function App() {
+  const [language, setLanguage] = useState(getFromLocal('language') ?? []);
   const [shoppingItems, setShoppingItems] = useState([]);
   const [shoppingCart, setShoppingCart] = useState(
-    getFromLocal('shoppingCart')
+    getFromLocal('shoppingCart') ?? []
   );
 
   useEffect(() => {
@@ -26,11 +28,18 @@ export default function App() {
   }, []);
 
   useEffect(() => setToLocal('shoppingCart', shoppingCart), [shoppingCart]);
+  useEffect(() => setToLocal('language', language), [language]);
+
+  function changeLanguage(language) {
+    setLanguage(language);
+  }
 
   return (
     <AppContainer>
+      <Language onClick={changeLanguage} />
       <Heading />
       <SearchBar
+        language={language}
         shoppingCart={shoppingCart}
         setShoppingCart={setShoppingCart}
         shoppingItems={shoppingItems}
