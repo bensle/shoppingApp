@@ -10,7 +10,6 @@ export default function SearchBar({
 }) {
   // const shoppingArray = shoppingItems.shoppingItems;
   const [searchInput, setSearchInput] = useState('');
-
   const [results, setResults] = useState([]);
   const refInput = useRef();
 
@@ -20,7 +19,7 @@ export default function SearchBar({
   };
   //-----Language is EN - if input  -> setResult with filterd base array-----//
   function filteredProductEN(input) {
-    let inputRegEN = new RegExp(input, 'i');
+    const inputRegEN = new RegExp(input, 'i');
     input
       ? setResults(
           shoppingItems.filter((product) => product.name.en.match(inputRegEN))
@@ -30,7 +29,7 @@ export default function SearchBar({
   }
   //----- Language is DE - if input  -> setResult with filterd base array-----//
   function filteredProductDE(input) {
-    let inputRegDE = new RegExp(input, 'i');
+    const inputRegDE = new RegExp(input, 'i');
     input
       ? setResults(
           shoppingItems.filter((product) => product.name.de.match(inputRegDE))
@@ -98,7 +97,7 @@ export default function SearchBar({
       )}
 
       <StyledList>
-        {searchInput && results == 0 ? (
+        {searchInput && results == '' ? (
           language === 'en' ? (
             <SytledParagraph>
               We could not find what you were looking for. For that we are truly
