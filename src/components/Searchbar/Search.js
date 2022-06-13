@@ -7,6 +7,7 @@ export default function SearchBar({
   shoppingCart,
   setShoppingCart,
   language,
+  onHandleClick,
 }) {
   // const shoppingArray = shoppingItems.shoppingItems;
   const [searchInput, setSearchInput] = useState('');
@@ -14,9 +15,7 @@ export default function SearchBar({
   const refInput = useRef();
 
   //----- sets the focus back to input after click-----//
-  const handleClick = () => {
-    refInput.current.focus();
-  };
+
   //-----Language is EN - if input  -> setResult with filterd base array-----//
   function filteredProductEN(input) {
     const inputRegEN = new RegExp(input, 'i');
@@ -44,16 +43,7 @@ export default function SearchBar({
     if (!shoppingCart.includes(newCartProduct))
       setShoppingCart([...shoppingCart, newCartProduct]);
     setSearchInput('');
-    handleClick();
-  }
-  //----- removes a product from cart -> function is on cartlistitem-----//
-  function removeProductFromCart(id) {
-    setShoppingCart(shoppingCart.filter((product) => product._id !== id));
-    handleClick();
-  }
-
-  function deleteCart(event) {
-    setShoppingCart([]);
+    // onHandleClick();
   }
 
   return (
@@ -120,46 +110,6 @@ export default function SearchBar({
           ))
         )}
       </StyledList>
-
-      {/* <StyledList>
-        {results.map((product, search) => (
-          <ListItem
-            onClick={() => addNewProductToCart(product._id)}
-            key={product._id}
-          >
-            {product.name.en}
-          </ListItem>
-        ))}
-      </StyledList> */}
-      <>
-        {language === 'en' ? (
-          <CartHeading>Shopping Cart</CartHeading>
-        ) : (
-          <CartHeading>Warenkorb</CartHeading>
-        )}
-
-        <CartList>
-          {shoppingCart.map((product) => (
-            <CartItem
-              onClick={() => removeProductFromCart(product._id)}
-              key={product._id}
-            >
-              {language === 'en' ? product.name.en : product.name.de}
-            </CartItem>
-          ))}
-        </CartList>
-        <Styleddiv>
-          {language === 'en' ? (
-            <Button type="button" onClick={deleteCart}>
-              Delete Cart
-            </Button>
-          ) : (
-            <Button type="button" onClick={deleteCart}>
-              Warenkorb löschen
-            </Button>
-          )}
-        </Styleddiv>
-      </>
     </SearchForm>
   );
 }
@@ -221,55 +171,6 @@ const ListItem = styled.li`
   text-align: center;
   &:hover {
     background-color: olivedrab;
-    color: white;
-  }
-`;
-
-const CartList = styled.ul`
-  list-style: none;
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-  margin-left: 10px;
-  margin-right: 10px;
-  background-color: gold;
-  margin-top: 10px;
-`;
-
-const CartItem = styled.li`
-  padding: 10px 15px;
-  border-radius: 12px;
-  background-color: olivedrab;
-  color: white;
-  flex-grow: 1;
-  text-align: center;
-  &:hover {
-    background-color: white;
-    color: black;
-  }
-`;
-
-const CartHeading = styled.h2`
-  text-align: center;
-  font-size: 1.2rem;
-  margin-top: 20px;
-`;
-
-const Styleddiv = styled.div`
-  display: flex;
-  gap: 5px;
-  justify-content: center;
-`;
-const Button = styled.button`
-  padding: 4px 8px;
-  border: none;
-  background-color: white;
-  border-radius: 10px;
-  font-family: inherit;
-  width: 50%;
-  margin-top: 20px;
-  &:hover {
-    background-color: crimson;
     color: white;
   }
 `;

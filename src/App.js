@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import Heading from './components/Heading/Heading';
 import SearchBar from './components/Searchbar/Search';
+import ShoppingCart from './components/ShoppingCart/ShoppingCart';
 import Language from './components/Language/Language';
 import useLocalStorage from './Hooks/useLocalStorage';
 
@@ -29,6 +30,10 @@ export default function App() {
     setLanguage(language);
   }
 
+  // const handleClick = () => {
+  //   refInput.current.focus();
+  // };
+
   return (
     <AppContainer>
       <Language onClick={changeLanguage} />
@@ -38,6 +43,14 @@ export default function App() {
         shoppingCart={shoppingCart}
         setShoppingCart={setShoppingCart}
         shoppingItems={shoppingItems}
+        // onHandleClick={handleClick}
+      />
+
+      <ShoppingCart
+        language={language}
+        shoppingCart={shoppingCart}
+        setShoppingCart={setShoppingCart}
+        // onHandleClick={handleClick}
       />
     </AppContainer>
   );
