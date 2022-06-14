@@ -2,7 +2,7 @@ import styled from 'styled-components';
 export default function Language({ onClick }) {
   return (
     <Styleddiv>
-      <Button onClick={() => onClick('en')}>Englisch</Button>
+      <Button onClick={() => onClick('en')}>English</Button>
       <Button onClick={() => onClick('de')}>German</Button>
     </Styleddiv>
   );
@@ -19,4 +19,8 @@ const Button = styled.button`
   background-color: white;
   border-radius: 10px;
   font-family: inherit;
+  &:hover {
+    background-color: crimson;
+    color: white;
+  }
 `;

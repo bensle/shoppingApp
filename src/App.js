@@ -1,49 +1,29 @@
-import { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import Heading from './components/Heading/Heading';
-import SearchBar from './components/Searchbar/Search';
-import { getFromLocal, setToLocal } from './lib/localStorage';
+import SearchForm from './components/Searchbar/SearchForm';
+import SearchList from './components/SearchList/SearchList';
+import ShoppingCart from './components/ShoppingCart/ShoppingCart';
 import Language from './components/Language/Language';
+import useLocalStorage from './Hooks/useLocalStorage';
 
 export default function App() {
-  const [language, setLanguage] = useState(getFromLocal('language') ?? []);
-  const [shoppingItems, setShoppingItems] = useState([]);
-  const [shoppingCart, setShoppingCart] = useState(
-    getFromLocal('shoppingCart') ?? []
-  );
-
-  useEffect(() => {
-    loadShoppingItems();
-    async function loadShoppingItems() {
-      try {
-        const response = await fetch(
-          'https://fetch-me.vercel.app/api/shopping/items'
-        );
-        const data = await response.json();
-        setShoppingItems(data.data);
-      } catch (error) {
-        console.log(error);
-      }
-    }
-  }, []);
-
-  useEffect(() => setToLocal('shoppingCart', shoppingCart), [shoppingCart]);
-  useEffect(() => setToLocal('language', language), [language]);
+  const [language, setLanguage] = useLocalStorage('Language', 'en');
 
   function changeLanguage(language) {
     setLanguage(language);
   }
+  //----- sets the focus back to input after click-----//
+  // const handleClick = () => {
+  //   refInput.current.focus();
+  // };
 
   return (
     <AppContainer>
       <Language onClick={changeLanguage} />
       <Heading />
-      <SearchBar
-        language={language}
-        shoppingCart={shoppingCart}
-        setShoppingCart={setShoppingCart}
-        shoppingItems={shoppingItems}
-      />
+      <SearchForm language={language} />
+      <SearchList language={language} />
+      <ShoppingCart language={language} />
     </AppContainer>
   );
 }
