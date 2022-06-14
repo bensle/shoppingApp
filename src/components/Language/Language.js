@@ -19,4 +19,8 @@ const Button = styled.button`
   background-color: white;
   border-radius: 10px;
   font-family: inherit;
+  &:hover {
+    background-color: crimson;
+    color: white;
+  }
 `;

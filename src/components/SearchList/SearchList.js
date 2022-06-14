@@ -1,50 +1,54 @@
 import styled from 'styled-components';
+import useSearchForm from '../../Hooks/useSearchForm';
+import useSearchList from '../../Hooks/useSearchList';
 
-export default function SearchList({
-  language,
-  searchInput,
-  results,
-  onSetSearchInput,
-  setShoppingCart,
-  shoppingCart,
-}) {
-  //----- add new Product to cart -> function is on listitem-----//
-  function addNewProductToCart(id) {
-    const newCartProduct = results.find((product) => product._id === id);
-    if (!shoppingCart.includes(newCartProduct))
-      setShoppingCart([...shoppingCart, newCartProduct]);
-    onSetSearchInput('');
-    // onHandleClick();
-  }
+export default function SearchList({ language }) {
+  const { results, searchInput } = useSearchForm();
+  const [addNewProductToCart] = useSearchList();
+
+  console.log('LIST', searchInput);
 
   return (
-    <StyledList>
-      {searchInput && results == '' ? (
-        language === 'en' ? (
-          <SytledParagraph>
-            We could not find what you were looking for. For that we are truly
-            sorry!
-          </SytledParagraph>
-        ) : (
-          <SytledParagraph>
-            Wir konnten das, was Du suchst leider nicht finden! Es tut uns
-            wirklich leid!
-          </SytledParagraph>
-        )
+    <>
+      {language === 'en' ? (
+        <StyledSearchHeading>Your Results</StyledSearchHeading>
       ) : (
-        results.map((product) => (
-          <ListItem
-            onClick={() => addNewProductToCart(product._id)}
-            key={product._id}
-          >
-            {language === 'en' ? product.name.en : product.name.de}
-          </ListItem>
-        ))
+        <StyledSearchHeading>Deine Ergebnisse</StyledSearchHeading>
       )}
-    </StyledList>
+
+      <StyledList>
+        {searchInput && results == '' ? (
+          language === 'en' ? (
+            <SytledParagraph>
+              We could not find what you were looking for. For that we are truly
+              sorry!
+            </SytledParagraph>
+          ) : (
+            <SytledParagraph>
+              Wir konnten das, was Du suchst leider nicht finden! Es tut uns
+              wirklich leid!
+            </SytledParagraph>
+          )
+        ) : (
+          results.map((product) => (
+            <ListItem
+              onClick={() => addNewProductToCart(product._id)}
+              key={product._id}
+            >
+              {language === 'en' ? product.name.en : product.name.de}
+            </ListItem>
+          ))
+        )}
+      </StyledList>
+    </>
   );
 }
 
+const StyledSearchHeading = styled.h2`
+  text-align: center;
+  font-size: 1.2rem;
+  margin-top: 20px;
+`;
 const SytledParagraph = styled.p`
   text-align: center;
   font-size: 1.2rem;

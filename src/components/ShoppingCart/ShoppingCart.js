@@ -1,19 +1,10 @@
 import styled from 'styled-components';
+import useShoppingCart from '../../Hooks/useShoppingCart';
 
-export default function ShoppingCart({
-  language,
-  shoppingCart,
-  setShoppingCart,
-  onHandleClick,
-}) {
-  //----- removes a product from cart -> function is on cartlistitem-----//
-  function removeProductFromCart(id) {
-    setShoppingCart(shoppingCart.filter((product) => product._id !== id));
-    // onHandleClick();
-  }
-  function deleteCart(event) {
-    setShoppingCart([]);
-  }
+export default function ShoppingCart({ language }) {
+  const { removeProductFromCart, deleteCart, shoppingCart } = useShoppingCart(
+    []
+  );
   return (
     <>
       {language === 'en' ? (

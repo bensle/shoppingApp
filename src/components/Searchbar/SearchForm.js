@@ -1,42 +1,11 @@
 import styled from 'styled-components';
-import { useState } from 'react';
-import { useRef } from 'react';
+import useSearchForm from '../../Hooks/useSearchForm';
+// import { useRef } from 'react';
 
-export default function SearchForm({
-  shoppingItems,
-  shoppingCart,
-  setShoppingCart,
-  language,
-  searchInput,
-  onSetSearchInput,
-  results,
-  onSetResults,
-}) {
-  // const shoppingArray = shoppingItems.shoppingItems;
-
-  const refInput = useRef();
-
-  //-----Language is EN - if input  -> setResult with filterd base array-----//
-  function filteredProductEN(input) {
-    const inputRegEN = new RegExp(input, 'i');
-    input
-      ? onSetResults(
-          shoppingItems.filter((product) => product.name.en.match(inputRegEN))
-        )
-      : onSetResults([]);
-    onSetSearchInput(input);
-  }
-  //----- Language is DE - if input  -> setResult with filterd base array-----//
-  function filteredProductDE(input) {
-    const inputRegDE = new RegExp(input, 'i');
-    input
-      ? onSetResults(
-          shoppingItems.filter((product) => product.name.de.match(inputRegDE))
-        )
-      : onSetResults([]);
-    onSetSearchInput(input);
-  }
-
+export default function SearchForm({ language }) {
+  const { filteredProductDE, filteredProductEN, searchInput } = useSearchForm();
+  // const refInput = useRef();
+  console.log('SearchForm', searchInput);
   return (
     <Form aria-labelledby="searchHeading">
       {language === 'en' ? (
@@ -48,7 +17,6 @@ export default function SearchForm({
           Was möchtest du kaufen?
         </StyledSearchHeading>
       )}
-
       <label htmlFor="foodSearch">
         {language === 'en' ? (
           <HiddenSpan>Search food</HiddenSpan>
@@ -58,7 +26,7 @@ export default function SearchForm({
       </label>
 
       <SearchInput
-        ref={refInput}
+        // ref={refInput}
         value={searchInput}
         type="text"
         name="search"
@@ -71,11 +39,6 @@ export default function SearchForm({
             : (event) => filteredProductDE(event.target.value)
         }
       />
-      {language === 'en' ? (
-        <StyledSearchHeading>Your Results</StyledSearchHeading>
-      ) : (
-        <StyledSearchHeading>Deine Ergebnisse</StyledSearchHeading>
-      )}
     </Form>
   );
 }
